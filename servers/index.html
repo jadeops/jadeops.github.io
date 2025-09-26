@@ -17,8 +17,8 @@
 
 <div class='alert alert-light p-4' role='alert'>
 <div id='slider-container' class='m-3'>
-  <div id='year-slider'></div>
-  <div id='slider-values'>RAM(GB): <span id='min-year'>0</span> - <span id='max-year'>1946</span></div>
+  <div id='ram-slider'></div>
+  <div id='slider-values'>RAM(GB): <span id='min-ram'>0</span> - <span id='max-ram'>1946</span></div>
 </div></div> 
 <div class="table-responsive">
 
@@ -55,12 +55,13 @@
 
 <script>
 $(function() {
-    // sort by score desc
+    // (default) sort by score desc
     let table = new DataTable('#allData', {
         order: [[7, 'desc']],
         'paging': false
     });
 
+    /*
     $('.filter-ram').on('click', function(){
         table
             .columns(6)
@@ -73,25 +74,23 @@ $(function() {
     $('#resetRamFilter').on('click', function() {
         table.columns(6).search('').draw();
     });
+    */
 
-
-
-  let minYear = 0;
-  let maxYear = 1946;
+  let minRam = 0;
+  let maxRam = 1946;
 
   $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-    const year = parseFloat(data[6]) || 0;
-    return year >= minYear && year <= maxYear;
+    const ram = parseFloat(data[6]) || 0;
+    return ram >= minRam && ram <= maxRam;
   });
 
-    const slider = document.getElementById('year-slider');
+    const slider = document.getElementById('ram-slider');
     noUiSlider.create(slider, {
       start: [0, 1946],
       connect: true,
       range: {
         'min': 0,
-        'max': 1946
-      },
+        'max': 1946      },
       step: 1,
       tooltips: true,
       format: {
@@ -101,10 +100,10 @@ $(function() {
     });
 
     slider.noUiSlider.on('update', function(values) {
-      minYear = values[0];
-      maxYear = values[1];
-      $('#min-year').text(minYear);
-      $('#max-year').text(maxYear);
+      minRam = values[0];
+      maxRam = values[1];
+      $('#min-ram').text(minRam);
+      $('#max-ram').text(maxRam);
       table.draw();
     });
 })
